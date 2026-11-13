@@ -1,0 +1,7 @@
+{
+  "locations": ["Ciudad Inventada"],
+  "positions": ["Programador PLC", "Técnico de sensores"],
+  "skills": ["PLC", "Python", "sensores"],
+  "summary": "Perfil completamente ficticio: automatización y pruebas de sensores",
+  "years_experience": 2
+}

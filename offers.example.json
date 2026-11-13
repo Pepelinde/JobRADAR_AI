@@ -1,0 +1,21 @@
+[
+  {
+    "id": "fictional-1", "title": "Programador PLC", "company": "Empresa Inventada A",
+    "location": "Ciudad Inventada", "description": "Programación PLC y pruebas de sensores con Python. Ejemplo ficticio.",
+    "required_skills": ["PLC", "sensores"], "min_years": 2,
+    "url": "https://example.invalid/jobs/1", "status": "unverified",
+    "contract": "Indefinido (dato ficticio)", "salary": null, "work_mode": "Presencial (dato ficticio)"
+  },
+  {
+    "id": "fictional-2", "title": "Técnico de sensores", "company": "Empresa Inventada B",
+    "location": "Ciudad Inventada", "description": "Sensores y puesta en marcha de sistemas SCADA. Ejemplo ficticio.",
+    "required_skills": ["sensores", "SCADA"], "min_years": 4,
+    "url": "https://example.invalid/jobs/2", "status": "unverified"
+  },
+  {
+    "id": "fictional-3", "title": "Programador PLC", "company": "Empresa Inventada C",
+    "location": "Otra Ciudad Ficticia", "description": "PLC y sensores. Ejemplo ficticio cerrado.",
+    "required_skills": ["PLC"], "min_years": 1,
+    "url": "https://example.invalid/jobs/3", "status": "closed"
+  }
+]

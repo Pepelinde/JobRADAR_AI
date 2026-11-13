@@ -11,6 +11,8 @@
 
 ## Código incluido
 
+`job_radar.py`, `test_job_radar.py` y los ejemplos ficticios de perfil/ofertas se han creado para este proyecto con asistencia de OpenAI Codex. Implementan fórmulas convencionales de TF-IDF, coseno y regresión logística, sin copiar código de terceros. Los módulos adicionales (`math`, `re`, `unicodedata`, `collections`, `datetime`, `urllib.request` y `unittest`) son de la biblioteca estándar de Python. No se redistribuyen modelos externos ni pesos preentrenados.
+
 `configure_search.py` es código nuevo preparado para este proyecto con asistencia de OpenAI Codex. Los ejemplos JSON y las instrucciones también se han creado para esta entrega. No se han copiado fragmentos externos.
 
 Utiliza `argparse`, `json` y `pathlib` de la biblioteca estándar de Python, mantenida por la comunidad de Python y distribuida por la Python Software Foundation. Python se instala por separado; su código no se redistribuye aquí. Referencias: [Python](https://www.python.org/), [licencia e historia](https://docs.python.org/3/license.html).

@@ -4,6 +4,14 @@
 
 Proyecto configurable de búsqueda asistida de empleo: elige ubicaciones, puestos y palabras clave.
 
+**Nuevo: comparador local.** Importa ofertas JSON, aplica reglas y TF-IDF/coseno, y admite regresión logística opcional con valoraciones humanas. [Guía, demostración y límites](MATCHING.md).
+
+```sh
+python job_radar.py rank --profile profile.example.json --source offers.example.json
+```
+
+Ejemplos ficticios. No hay conectores específicos de plataformas ni envío automático.
+
 ## 1. Your idea in a nutshell — La idea en pocas palabras
 
 **Job Radar** ayuda a encontrar oportunidades de trabajo relacionadas con un perfil profesional y contrastar sus requisitos. Cada persona puede elegir sus ubicaciones, puestos y palabras clave.
@@ -37,13 +45,13 @@ Se pueden consultar páginas públicas y contenido indexado cuando el acceso dir
 - Comparación de título, empresa, ubicación, enlaces y funciones para identificar duplicados y republicaciones.
 - Redacción de motivos de encaje y carencias de información con enlaces a las fuentes.
 
-Las marcas y herramientas usadas para buscar no se convierten automáticamente en competencias de la persona. No se ha entrenado un modelo propio ni se han medido precisión o exhaustividad. La deduplicación actual se apoya en el historial; no existe en este repositorio una base de datos o clasificador implementado.
+Las marcas y herramientas usadas para buscar no se convierten automáticamente en competencias de la persona. No se distribuye un modelo entrenado con datos reales ni se han medido precisión o exhaustividad. El comparador implementa deduplicación heurística y clasificación logística opcional; no incluye una base de datos persistente.
 
 ### Estado real del proyecto
 
-El código está comentado por funciones y pasos. Véase [AI-METHODS.md](AI-METHODS.md): el generador no implementa Bayes, Monte Carlo, regresión ni vecinos más cercanos; la asistencia de IA ocurre fuera de este programa.
+El código está comentado por funciones y pasos. El generador y el comparador son módulos distintos; este último implementa coseno y regresión logística opcional. Véase [AI-METHODS.md](AI-METHODS.md).
 
-Este repositorio incluye un **generador local de instrucciones de búsqueda** configurable. No busca ofertas ni envía correos: produce texto para una revisión asistida. No contiene un recolector ni una aplicación autónoma de alertas. Clonarlo o cambiar su configuración no modifica ninguna alerta externa.
+Este repositorio incluye un **generador local de instrucciones de búsqueda** y un comparador local. El comparador importa archivos o feeds JSON autorizados; no recoge páginas HTML de portales ni envía correos. No es una aplicación autónoma de alertas. Clonarlo o cambiar su configuración no modifica ninguna alerta externa.
 
 No se incluyen credenciales, datos de destinatarios, historial personal ni copias completas de anuncios.
 

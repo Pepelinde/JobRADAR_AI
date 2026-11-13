@@ -7,3 +7,5 @@ credentials*.json
 token*.json
 offers.private.json
 sent-history.json
+__pycache__/
+*.pyc

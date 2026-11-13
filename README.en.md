@@ -4,6 +4,14 @@
 
 A configurable project for assisted job searching: choose locations, positions and keywords.
 
+**New: local matcher.** Import JSON listings, apply rules and TF-IDF cosine similarity, and optionally train logistic regression from human relevance labels. See [MATCHING.md](MATCHING.md), including an English summary, for the demo and limitations.
+
+```sh
+python job_radar.py rank --profile profile.example.json --source offers.example.json
+```
+
+All examples are fictional. No platform-specific connectors or automatic email delivery are included.
+
 ## 1. Your idea in a nutshell
 
 **Job Radar** helps identify job opportunities related to a professional profile and assess their requirements. Each user can choose their locations, positions and keywords.
@@ -37,13 +45,13 @@ Public pages and indexed content may be consulted when direct access fails. This
 - Comparison of titles, companies, locations, links and duties to identify duplicates and reposts.
 - Explanations of relevance and information gaps, with links to sources.
 
-Brands and tools used as search terms do not automatically become user skills. No custom model has been trained, and precision or recall has not been measured. Deduplication in the assisted workflow relies on history; this repository does not implement a database or classifier.
+Brands and tools used as search terms do not automatically become user skills. No model trained on real data is distributed, and precision or recall has not been measured. The matcher implements heuristic deduplication and optional logistic classification, but no persistent database.
 
 ### Current project status
 
-The code includes function docstrings and step-by-step comments in Spanish. See [AI-METHODS.md](AI-METHODS.md), which includes an English summary: the generator does not implement Bayes, Monte Carlo, regression or nearest neighbors. AI assistance occurs outside this program.
+The code includes function docstrings and comments in Spanish. See [AI-METHODS.md](AI-METHODS.md): the generator and matcher are separate modules. The matcher implements cosine similarity and optional logistic regression.
 
-This repository includes a configurable **local search-instruction generator**. It does not search for jobs or send emails: it produces text for an assisted review. It does not contain a scraper or a standalone alert application. Cloning it or changing its configuration does not modify any external alert.
+This repository includes a configurable **local search-instruction generator** and a local matcher. The matcher imports files or authorized JSON feeds; it does not scrape job-board HTML or send emails. It is not a standalone alert application. Cloning it or changing its configuration does not modify any external alert.
 
 No credentials, recipient details, personal history or complete copies of job advertisements are included.
 
