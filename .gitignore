@@ -1,0 +1,9 @@
+# Datos privados y credenciales
+.env
+.env.*
+!.env.example
+*.local.json
+credentials*.json
+token*.json
+offers.private.json
+sent-history.json

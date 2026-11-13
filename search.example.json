@@ -1,0 +1,14 @@
+{
+  "profile_label": "Perfil Demo — persona ficticia",
+  "locations": [
+    "Ciudad Inventada (ciudad ficticia)",
+    "Provincia de Sierra Imaginaria (provincia ficticia, todos sus municipios)"
+  ],
+  "positions": [
+    "Técnico/a de sensores",
+    "Programador/a PLC junior"
+  ],
+  "keywords": ["sensórica", "PLC", "HMI"],
+  "confirmed_skills": ["Formación técnica ficticia para demostración"],
+  "sources": ["LinkedIn Empleos", "InfoJobs", "Páginas de empresas"]
+}
