@@ -19,7 +19,7 @@ Utiliza `argparse`, `json` y `pathlib` de la biblioteca estándar de Python, man
 
 El generador no incluye conexiones a cuentas privadas ni modifica automatizaciones externas.
 
-No se ha elegido una licencia de redistribución para el código propio ni se afirma que el repositorio sea software de código abierto. Antes de incorporar material ajeno hay que verificar su licencia: una cita no sustituye al permiso de reutilización.
+El código y la documentación propios del proyecto se distribuyen bajo la [licencia MIT](LICENSE). El aviso utiliza «Job Radar contributors» para conservar una atribución sin datos personales. La licencia no cambia las condiciones de Python, los servicios externos ni los anuncios de terceros. Antes de incorporar material ajeno hay que verificar su licencia: una cita no sustituye al permiso de reutilización.
 
 ## Registro obligatorio para futuras incorporaciones
 

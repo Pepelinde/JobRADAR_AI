@@ -223,3 +223,9 @@ People affected:
 - [Gmail](https://mail.google.com/).
 
 References identify sources and tools; they do not imply sponsorship, affiliation, a reuse license or guaranteed access.
+
+## License
+
+The project's own code and documentation are distributed under the [MIT License](LICENSE). It permits use, modification and redistribution, including commercial use, provided the copyright and permission notices are retained. The software is provided without warranty. The notice uses “Job Radar contributors” without publishing personal information.
+
+Python and external components retain their own licenses. This license does not grant rights to third-party advertisements, data or external services, and does not change the repository's private visibility. Reference text: [MIT — Open Source Initiative](https://opensource.org/license/mit).
