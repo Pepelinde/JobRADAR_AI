@@ -1,5 +1,7 @@
 # Job Radar
 
+**Español** | [English](README.en.md)
+
 Proyecto configurable de búsqueda asistida de empleo: elige ubicaciones, puestos y palabras clave.
 
 ## 1. Your idea in a nutshell — La idea en pocas palabras
