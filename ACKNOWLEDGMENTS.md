@@ -2,6 +2,8 @@
 
 ## Registro de esta entrega — 13/11/2026
 
+La estructura de ambos README adapta la plantilla del proyecto final de **Building AI**, creada por **Reaktor Innovations y la University of Helsinki**, facilitada para este proyecto. Se conserva su atribución en el comentario inicial y en los reconocimientos. No se atribuye al proyecto la autoría de esa plantilla ni se presume una licencia específica de la plantilla no verificada.
+
 | Elemento | Procedencia / contribución | Condiciones |
 | --- | --- | --- |
 | Idea y requisitos | Persona promotora, sin identificación personal en los archivos | Definición del alcance |
