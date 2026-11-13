@@ -41,6 +41,8 @@ Brands and tools used as search terms do not automatically become user skills. N
 
 ### Current project status
 
+The code includes function docstrings and step-by-step comments in Spanish. See [AI-METHODS.md](AI-METHODS.md), which includes an English summary: the generator does not implement Bayes, Monte Carlo, regression or nearest neighbors. AI assistance occurs outside this program.
+
 This repository includes a configurable **local search-instruction generator**. It does not search for jobs or send emails: it produces text for an assisted review. It does not contain a scraper or a standalone alert application. Cloning it or changing its configuration does not modify any external alert.
 
 No credentials, recipient details, personal history or complete copies of job advertisements are included.

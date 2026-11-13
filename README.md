@@ -41,6 +41,8 @@ Las marcas y herramientas usadas para buscar no se convierten automáticamente e
 
 ### Estado real del proyecto
 
+El código está comentado por funciones y pasos. Véase [AI-METHODS.md](AI-METHODS.md): el generador no implementa Bayes, Monte Carlo, regresión ni vecinos más cercanos; la asistencia de IA ocurre fuera de este programa.
+
 Este repositorio incluye un **generador local de instrucciones de búsqueda** configurable. No busca ofertas ni envía correos: produce texto para una revisión asistida. No contiene un recolector ni una aplicación autónoma de alertas. Clonarlo o cambiar su configuración no modifica ninguna alerta externa.
 
 No se incluyen credenciales, datos de destinatarios, historial personal ni copias completas de anuncios.
