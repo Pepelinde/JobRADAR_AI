@@ -6,165 +6,167 @@ Copy the template, paste it to your GitHub README and edit! -->
 
 Final project for the Building AI course
 
-**Español** | [English](README.en.md)
+[Español](README.es.md) | **English**
 
 ## Summary
 
-Job Radar compara ofertas de empleo con un perfil configurable mediante reglas y similitud de texto. Explica coincidencias y requisitos pendientes, y permite entrenar una regresión logística con valoraciones humanas para ordenar las oportunidades.
+Job Radar compares job listings with a configurable profile using rules and text similarity. It explains matches and unconfirmed requirements, and supports logistic regression trained on human relevance ratings to rank opportunities.
 
 ## Background
 
-Las ofertas se distribuyen entre distintas fuentes, pueden estar duplicadas y a menudo no permiten confirmar si una persona cumple sus requisitos. Compararlas manualmente con un perfil consume tiempo durante una búsqueda activa.
+Job listings are spread across sources, may be duplicated and often leave uncertainty about whether a person meets their requirements. Manually comparing them with a profile takes time during an active search.
 
-El proyecto busca facilitar esa revisión sin inventar competencias ni confundir información desconocida con requisitos cumplidos. Es una necesidad recurrente en la búsqueda de empleo; no se ha medido su frecuencia en la población.
+The project aims to simplify that review without inventing skills or treating unknown information as a satisfied requirement. This is a recurring job-search need; its frequency in the population has not been measured.
 
-Los problemas abordados son:
+Problems addressed include:
 
-- Reunir y normalizar ofertas procedentes de varias fuentes estructuradas.
-- Comparar formación, competencias y experiencia con los requisitos publicados.
-- Evitar duplicados y señalar ofertas cerradas o fuera de las ubicaciones elegidas.
-- Explicar por qué una oferta puede interesar y qué falta por confirmar.
+- Combining and normalizing listings from multiple structured sources.
+- Comparing education, skills and experience with published requirements.
+- Detecting duplicates and identifying closed listings or unselected locations.
+- Explaining why a listing may be relevant and what still needs confirmation.
 
 ## How is it used?
 
-Está pensado para personas que buscan empleo y quieren revisar oportunidades según sus ubicaciones, puestos y competencias. Se ejecuta localmente cuando la persona dispone de nuevos datos; no programa tareas ni envía correos. Requiere **Python 3.10 o posterior**, sin paquetes adicionales.
+The intended users are job seekers who want to review opportunities against their locations, positions and skills. It runs locally when new data is available; it does not schedule tasks or send emails. Requires **Python 3.10 or later**, with no additional packages.
 
-### 1. Probar con datos ficticios
+### 1. Try fictional data
 
 ```sh
 python job_radar.py rank --profile profile.example.json --source offers.example.json
 ```
 
-Los perfiles, empresas, ubicaciones y ofertas del ejemplo son inventados. Los enlaces `example.invalid` no corresponden a candidaturas reales.
+Example profiles, companies, locations and vacancies are invented. The `example.invalid` links are not real application pages.
 
-### 2. Configurar una comparación propia
+### 2. Configure a comparison
 
-Copia `profile.example.json` a `profile.local.json` y modifica `locations`, `positions`, `skills`, `summary` y `years_experience`. Usa `null` cuando no se conozca la experiencia. Prepara ofertas con el esquema descrito en [MATCHING.md](MATCHING.md).
+Copy `profile.example.json` to `profile.local.json` and edit `locations`, `positions`, `skills`, `summary` and `years_experience`. Use `null` for unknown experience. Prepare listings using the schema in [MATCHING.md](MATCHING.md).
 
 ```sh
 python job_radar.py rank --profile profile.local.json --source offers-a.local.json --source offers-b.local.json
 ```
 
-`--source` puede repetirse y acepta archivos o feeds JSON HTTPS autorizados. No admite directamente páginas HTML de portales. Los archivos `*.local.json` están excluidos de Git.
+Repeat `--source` to import files or authorized HTTPS JSON feeds. Ordinary HTML job-board pages are not supported directly. Files named `*.local.json` are excluded from Git.
 
-El informe JSON incluye:
+The JSON report includes:
 
-- Fuentes consultadas, errores y cobertura parcial.
-- Ofertas ordenadas con `score`, similitud, coincidencias y requisitos pendientes.
-- Ubicación, enlace y condiciones aportadas por la fuente; los datos ausentes figuran como desconocidos.
-- Exclusiones con sus motivos. Las ofertas con `eligible: false` quedan al final y no deben tratarse como recomendaciones.
+- Source results, errors and partial coverage.
+- Ranked listings with `score`, similarity, matches and pending requirements.
+- Location, link and source-provided conditions; absent information remains unknown.
+- Exclusions and reasons. Listings with `eligible: false` remain at the end and must not be presented as recommendations.
 
-### 3. Aprender de valoraciones humanas, opcionalmente
+### 3. Optionally learn from human ratings
 
-`feedback.local.json` debe ser una lista de valoraciones. Cada entrada contiene las cuatro `features` copiadas del informe y `relevant`: 1 para relevante o 0 para no relevante.
+`feedback.local.json` must contain a list of ratings. Each entry has the four `features` copied from a result and `relevant`: 1 for relevant or 0 for irrelevant.
 
 ```json
 {"features": [0.45, 0.5, 1, 0], "relevant": 1}
 ```
 
-Se necesitan al menos 20 valoraciones y ambas clases. Ese mínimo técnico no garantiza datos suficientes ni calidad estadística. No deben generarse etiquetas a partir de las puntuaciones del propio programa.
+At least 20 ratings and both classes are required. This technical minimum does not guarantee sufficient or statistically adequate data. Do not generate labels from the program's own scores.
 
 ```sh
 python job_radar.py train --feedback feedback.local.json > model.local.json
 python job_radar.py rank --profile profile.local.json --source offers.local.json --model model.local.json
 ```
 
-Con modelo, las ofertas elegibles se ordenan por `estimated_relevance`. El modelo se guarda con `evaluated: false`: no ha sido evaluado en datos independientes.
+With a model, eligible listings are ranked by `estimated_relevance`. Models are saved with `evaluated: false`: they have not been independently evaluated.
 
-### 4. Generar instrucciones para un asistente externo
+### 4. Generate instructions for an external assistant
 
-El módulo separado `configure_search.py` permite elegir ubicaciones, puestos y palabras clave para generar un texto de instrucciones. No ejecuta búsquedas ni llama a una IA.
+The separate `configure_search.py` module generates search instructions from chosen locations, positions and keywords. It does not search or call an AI service.
 
 ```sh
 python configure_search.py --config search.example.json
-python configure_search.py --config search.example.json --location "Ciudad Inventada" --position "Técnico/a de sensores"
+python configure_search.py --config search.example.json --location "Invented City" --position "Sensor technician"
 ```
 
-Para uso propio, copia la configuración a `search.local.json`. Las opciones repetidas sustituyen la lista correspondiente del archivo. Más detalles en [EXAMPLE.md](EXAMPLE.md).
+For personal use, copy the configuration to `search.local.json`. Repeated command-line options replace the corresponding list from the file. See [EXAMPLE.md](EXAMPLE.md).
 
-### 5. Comprobar el funcionamiento
+The code comments, example configuration, output and detailed guides are currently in Spanish; this README provides English usage instructions. English configuration values do not translate the program's output template.
+
+### 5. Check the implementation
 
 ```sh
 python -m unittest -v test_job_radar.py
 ```
 
-**10 pruebas sintéticas superadas:** coseno, reglas de ubicación/cierre/caducidad, experiencia desconocida, datos inválidos, duplicados, fallos parciales/totales, importación HTTPS simulada, aprendizaje logístico y conservación de exclusiones con modelo. No miden precisión en ofertas reales.
+**10 passing synthetic tests:** cosine, location/closure/expiry rules, unknown experience, invalid data, duplicates, partial/total source failures, mocked HTTPS import, logistic learning and preservation of exclusions with a model. They do not measure accuracy on real vacancies.
 
 ## Data sources and AI methods
 
-### Datos y recogida
+### Data and collection
 
-El sistema recibe datos aportados por la persona usuaria y ofertas estructuradas de fuentes cuyo acceso esté autorizado. Incluye un importador de JSON local y feeds HTTPS; **no hay conectores específicos de LinkedIn o InfoJobs** ni extracción automática de requisitos desde HTML.
+The system accepts user-provided profile information and structured listings from sources authorized for use. It imports local JSON and HTTPS feeds; **there are no LinkedIn or InfoJobs-specific connectors**, or automatic HTML requirement extraction.
 
-[LinkedIn Empleos](https://www.linkedin.com/jobs/), [InfoJobs](https://www.infojobs.net/) y las páginas de empresas son posibles fuentes para una futura integración autorizada. El prototipo distribuido utiliza únicamente ejemplos ficticios.
+[LinkedIn Jobs](https://www.linkedin.com/jobs/), [InfoJobs](https://www.infojobs.net/) and company career pages are potential sources for future authorized integrations. The distributed prototype uses fictional examples only.
 
-Cada oferta necesita `id`, `title`, `company`, `location`, `description` y `url`. Admite competencias, experiencia mínima, contrato, salario, modalidad y fechas. Los detalles se describen en [MATCHING.md](MATCHING.md). El estado abierto es una afirmación de la fuente; el programa no visita el enlace para verificarlo.
+Each listing requires `id`, `title`, `company`, `location`, `description` and `url`. Optional fields include skills, minimum experience, contract, salary, working arrangement and dates. See [MATCHING.md](MATCHING.md). Open status is a source assertion; the program does not visit the link to verify it.
 
-### Métodos implementados
+### Implemented methods
 
-| Componente | Método y resultado |
+| Component | Method and result |
 | --- | --- |
-| Validación | Comprueba campos, listas, URL, fechas y experiencia no negativa |
-| Deduplicación | URL exacta o título/empresa/ubicación normalizados; conserva la primera fuente |
-| Reglas | Excluye ubicación no elegida y ofertas cerradas o vencidas; compara requisitos sin inventar datos |
-| Representación textual | Tokenización y TF-IDF con frecuencia relativa e IDF suavizado |
-| Comparación | Similitud del coseno entre los vectores del perfil y la oferta |
-| Índice inicial | Pesos manuales para coseno, competencias, ubicación y experiencia |
-| Aprendizaje opcional | Regresión logística binaria, descenso de gradiente y regularización L2 |
-| Explicación | Coincidencias, carencias de información, exclusiones y procedencia |
+| Validation | Checks fields, lists, URLs, dates and nonnegative experience |
+| Deduplication | Exact URL or normalized title/company/location; keeps the first source |
+| Rules | Excludes unselected locations and closed/expired listings; compares requirements without inventing data |
+| Text representation | Tokenization and TF-IDF with relative frequency and smoothed IDF |
+| Comparison | Cosine similarity between profile and listing vectors |
+| Initial index | Manual weights for cosine, skills, location and experience |
+| Optional learning | Binary logistic regression, gradient descent and L2 regularization |
+| Explanation | Matches, information gaps, exclusions and provenance |
 
-El IDF utilizado es `log((1+n)/(1+df))+1`. El índice es:
+IDF is `log((1+n)/(1+df))+1`. The initial index is:
 
 ```text
-100 × (0.55 × coseno + 0.30 × cobertura_competencias
-       + 0.10 × ubicación + 0.05 × experiencia)
+100 × (0.55 × cosine + 0.30 × skill_coverage
+       + 0.10 × location + 0.05 × experience)
 ```
 
-Los pesos son decisiones iniciales sin validación empírica. La regresión usa esas cuatro características y etiquetas humanas de relevancia. **Ni el índice ni la salida logística son probabilidades de contratación.**
+Weights are initial design choices without empirical validation. Regression uses those four features and human relevance labels. **Neither the index nor the logistic output is a hiring probability.**
 
-La similitud compara palabras: no utiliza embeddings ni reconoce sinónimos automáticamente. No se implementan Bayes, Monte Carlo, k-NN ni llamadas a modelos de lenguaje. La asistencia de IA en la creación del proyecto se reconoce por separado.
+Similarity compares words: it does not use embeddings or automatically recognize synonyms. Bayes, Monte Carlo, k-NN and language-model calls are not implemented. AI assistance in creating the project is acknowledged separately.
 
-### Archivos
+### Files
 
-- [`job_radar.py`](job_radar.py): importación, comparación y entrenamiento, con comentarios explicativos.
-- [`configure_search.py`](configure_search.py): generador de instrucciones comentado.
-- [`profile.example.json`](profile.example.json), [`offers.example.json`](offers.example.json) y [`search.example.json`](search.example.json): ejemplos ficticios.
-- [`test_job_radar.py`](test_job_radar.py): pruebas automatizadas.
-- [`MATCHING.md`](MATCHING.md) y [`AI-METHODS.md`](AI-METHODS.md): documentación técnica.
+- [`job_radar.py`](job_radar.py): import, matching and training with explanatory comments.
+- [`configure_search.py`](configure_search.py): commented instruction generator.
+- [`profile.example.json`](profile.example.json), [`offers.example.json`](offers.example.json) and [`search.example.json`](search.example.json): fictional examples.
+- [`test_job_radar.py`](test_job_radar.py): automated tests.
+- [`MATCHING.md`](MATCHING.md) and [`AI-METHODS.md`](AI-METHODS.md): technical documentation.
 
 ## Challenges
 
-- No garantiza cobertura de todas las plataformas ni vigencia de las ofertas. Un fallo de fuente se registra; si fallan todas, devuelve código 2 sin afirmar que no haya vacantes.
-- La importación requiere datos estructurados. No hay conectores específicos, base de datos persistente, correo automático ni aplicación autónoma de alertas.
-- Ubicaciones y competencias usan coincidencia textual normalizada. No hay geocodificación: una ciudad no se reconoce automáticamente dentro de una provincia.
-- La antigüedad global no acredita experiencia en una tecnología concreta. La información desconocida exige revisión humana.
-- La deduplicación puede fusionar plazas distintas o dejar pasar variantes.
-- TF-IDF depende del lote de ofertas; cambiarlo modifica las características. Un modelo productivo requeriría estabilizar el vocabulario/IDF y evaluar con datos independientes.
-- No se proporciona un modelo entrenado con datos reales ni métricas de precisión, exhaustividad o calibración.
-- Deben protegerse los perfiles y valoraciones, respetar las condiciones de las fuentes y evitar inferencias sobre atributos sensibles o decisiones discriminatorias.
-- No decide contrataciones, presenta candidaturas, evita controles de acceso ni soluciona la falta de vacantes o la discriminación laboral.
+- Coverage and listing status cannot be guaranteed. Source failures are recorded; if all fail, the program returns code 2 without claiming there are no vacancies.
+- Input must be structured. There are no platform-specific connectors, persistent database, automatic emails or standalone alert application.
+- Locations and skills use normalized text matching. There is no geocoding: cities are not automatically mapped to provinces.
+- Overall experience does not establish experience in a particular technology. Unknown information requires human review.
+- Deduplication may merge separate vacancies or miss variants.
+- TF-IDF depends on the listing batch; changing it changes features. Production models require a stable vocabulary/IDF and independent evaluation.
+- No model trained on real data, precision, recall or calibration results are provided.
+- Profiles and ratings need protection, source conditions must be respected, and sensitive-attribute inference or discriminatory decisions must be avoided.
+- The system does not make hiring decisions, submit applications, bypass access controls or solve vacancy shortages or employment discrimination.
 
-Los candidatos mantienen el control de sus datos y decisiones; las empresas deben ver sus requisitos representados con fidelidad. Los cambios en este repositorio no modifican ninguna alerta externa.
+Candidates retain control over their data and decisions; employer requirements must be represented accurately. Repository changes do not modify external alerts.
 
 ## What next?
 
-1. Incorporar conectores a APIs o feeds oficiales concretos cuando su uso esté autorizado.
-2. Guardar ofertas, procedencia y comprobaciones de estado en un registro persistente.
-3. Estabilizar vocabulario/IDF y comparar el índice manual y la regresión con conjuntos separados de entrenamiento y evaluación.
-4. Medir relevancia, duplicados, cierres, precisión, exhaustividad y calibración; no atribuir mejoras sin evidencia.
-5. Añadir un panel accesible para configurar búsquedas, corregir perfiles y aportar valoraciones humanas.
-6. Considerar normalización geográfica y equivalencias técnicas revisadas.
-7. Añadir una capa independiente de entrega y controles de privacidad.
+1. Add connectors for specific official APIs or feeds when authorized.
+2. Persist listings, provenance and status checks.
+3. Stabilize vocabulary/IDF and compare the manual index and regression on separate training and evaluation sets.
+4. Measure relevance, duplicates, closures, precision, recall and calibration; claim improvements only with evidence.
+5. Add an accessible dashboard for configuration, profile corrections and human ratings.
+6. Consider geographical normalization and reviewed technical equivalences.
+7. Add a separate delivery layer and privacy controls.
 
-Para avanzar se necesitan conocimientos de integración de datos, estadística y evaluación de aprendizaje automático, además de personas que revisen ejemplos representativos y ayuden a evaluar accesibilidad y sesgos.
+Further progress needs data-integration, statistics and machine-learning evaluation skills, plus people to review representative examples and assess accessibility and bias.
 
 ## Acknowledgments
 
-- **Plantilla del proyecto Building AI:** creada por **Reaktor Innovations y la University of Helsinki**, según la plantilla facilitada. Se conserva su atribución en el comentario inicial. Esta referencia no implica afiliación o evaluación del proyecto por esas entidades.
-- **Idea y requisitos:** persona promotora del proyecto, sin identificación personal en los archivos.
-- **Código y documentación:** preparados con asistencia de **OpenAI Codex**, sin copiar implementaciones de otros repositorios.
-- **Python y biblioteca estándar:** comunidad de Python y **Python Software Foundation**. Python se instala por separado y mantiene su [licencia e historial de derechos](https://docs.python.org/3/license.html); no se redistribuye su código aquí.
-- **Métodos matemáticos:** TF-IDF, coseno y regresión logística son técnicas conocidas; su uso no implica haber incorporado una biblioteca externa o un modelo preentrenado.
-- **Datos y recursos gráficos:** ejemplos sintéticos creados para el proyecto; no se han incorporado imágenes ni anuncios de terceros.
+- **Building AI project template:** created by **Reaktor Innovations and the University of Helsinki**, as credited in the supplied template. Its attribution is retained in the opening comment. This does not imply affiliation or assessment by those organizations.
+- **Idea and requirements:** the project's initiator, without personal identification in the files.
+- **Code and documentation:** prepared with **OpenAI Codex** assistance, without copying implementations from other repositories.
+- **Python and its standard library:** the Python community and **Python Software Foundation**. Python is installed separately and retains its [license and copyright history](https://docs.python.org/3/license.html); its code is not redistributed here.
+- **Mathematical methods:** TF-IDF, cosine and logistic regression are established techniques; using them does not mean incorporating an external library or pretrained model.
+- **Data and images:** synthetic examples created for the project; no third-party images or advertisements are included.
 
-Los avisos de dependencias y autoría figuran en [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md). El código y la documentación propios se distribuyen bajo [MIT](LICENSE), con atribución «Job Radar contributors»: permite uso, modificación y redistribución, incluido uso comercial, conservando los avisos y sin garantías. No concede derechos sobre datos, servicios o materiales de terceros ni cambia la visibilidad del repositorio.
+Dependency and authorship notices are in [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md). The project's own code and documentation are distributed under [MIT](LICENSE), attributed to “Job Radar contributors”: use, modification and redistribution, including commercial use, are permitted with retained notices and without warranty. This does not grant rights to third-party data, services or materials, or change repository visibility.
